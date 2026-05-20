@@ -1,5 +1,7 @@
 //Restaurant detail page:
 import React from 'react';
+import { withAppContext } from '@optimizely/cms-sdk/react/server';
+import { fetchRestaurant } from '@/lib/cms';
  
 /**
 * FIXED: Inline SVG Icons to resolve 'lucide-react' Module Not Found error.
@@ -206,19 +208,21 @@ const RestaurantDetailPage = ({ data }: { data: RestaurantData }) => {
   );
 };
  
-export default function Home() {
-  const cmsData = {
-    RestaurantName: "Trick Rider",
+async function RestaurantPage() {
+  const cmsData = await fetchRestaurant();
+
+  const data: RestaurantData = {
+    RestaurantName: cmsData?.restaurantName || "Trick Rider",
     HeroTitle: "A Bold Homage to Texan Heritage",
-    HeroSubtitle: "Authentic Rodeo Culture Meets Upscale Sophistication",
-    HeroImage: "https://omni.optimarvin.com/globalassets/fort-worth--ftwdtn-couple-dining-2800x1180.jpg",
-    Description: `
-      <p>Trick Rider pays a spirited tribute to the legendary female trick riders of the rodeo across the Lone Star State. This upscale steakhouse blends authentic rodeo culture with a sophisticated atmosphere, featuring a hand-cut crystal horse chandelier that serves as the room's crown jewel.</p>
+    HeroSubtitle: cmsData?.cuisine || "Authentic Rodeo Culture Meets Upscale Sophistication",
+    HeroImage: cmsData?.heroImage?.url?.default || "https://omni.optimarvin.com/globalassets/fort-worth--ftwdtn-couple-dining-2800x1180.jpg",
+    Description: cmsData?.description?.html || `
+      <p>Trick Rider pays a spirited tribute to the legendary female trick riders of the rodeo across the Lone Star State. This upscale steakhouse blends authentic rodeo culture with a sophisticated atmosphere, featuring a hand-cut crystal horse chandelier that serves as the room’s crown jewel.</p>
       <p>Prepare for a dining experience defined by signature steaks, premium seafood, and a horse-shoe shaped bar that serves as the heart of Frisco’s evening scene. Whether you are seeking a refined dinner or a vibrant night of cocktails, Trick Rider captures the essence of modern Texan luxury.</p>
     `,
     MenuLink: {
-      url: "http://menus.omnihotels.com/htmlmenu/omnipgafriscoresort/trickrider",
-      text: "View Digital Menu"
+      url: cmsData?.menuLink?.url?.default || "http://menus.omnihotels.com/htmlmenu/omnipgafriscoresort/trickrider",
+      text: cmsData?.menuLink?.title || "View Digital Menu"
     },
     OpenTableID: 1278010,
     Gallery: [
@@ -226,6 +230,8 @@ export default function Home() {
       "https://omni.optimarvin.com/globalassets/brand-dining-family-2.jpg"
     ]
   };
- 
-  return <RestaurantDetailPage data={cmsData} />;
+
+  return <RestaurantDetailPage data={data} />;
 }
+
+export default withAppContext(RestaurantPage);

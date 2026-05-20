@@ -5,7 +5,7 @@ import Head from 'next/head';
 * OfferCardV2 Component
 * Renders the Omni Hospitality OfferEntityV2 structured content.
 */
-const OfferCardV2 = ({
+export const OfferCardV2 = ({
   badge = "Flash Sale",
   bookingWindow = "May 20 - June 15, 2026",
   cardImage = "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=800",

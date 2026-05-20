@@ -6,7 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "cms:dryrun": "optimizely-cms-cli config push --dryRun",
+    "cms:push": "optimizely-cms-cli config push",
+    "cms:push:force": "optimizely-cms-cli config push --force",
+    "cms:pull": "optimizely-cms-cli config pull"
   },
   "dependencies": {
     "@optimizely/cms-cli": "^2.0.0",
