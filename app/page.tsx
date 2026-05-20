@@ -108,19 +108,6 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* HERO CAROUSEL */}
-      <section className="w-full">
-        <HeroCarousel slides={carouselSlides.length > 0 ? carouselSlides : [
-          {
-            heading: 'Escape to Omni PGA Frisco',
-            description: 'Championship golf and Texan luxury at the heart of Frisco.',
-            backgroundImage: 'https://omni.optimarvin.com/globalassets/fort-worth--ftwdtn-couple-dining-2800x1180.jpg',
-            buttonLink: '/restaurant',
-            buttonText: 'Discover Dining',
-          },
-        ]} interval={6500} />
-      </section>
-
       {/* INTRO */}
       <section className="bg-[#050505] py-24 px-6">
         <div className="max-w-4xl mx-auto text-center">

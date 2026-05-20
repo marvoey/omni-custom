@@ -1,10 +1,10 @@
 import { contentType } from '@optimizely/cms-sdk';
-import { HeroSlideItem } from './HeroSlideItem';
+import { OfferEntityV2 } from './OfferEntityV2';
 
 export const HeroCarousel = contentType({
   key: 'HeroCarousel',
   displayName: 'Hero Carousel',
-  description: 'Flagship homepage carousel that renders a collection of Offer Slide Items.',
+  description: 'Flagship homepage carousel that renders a collection of OfferEntityV2 items.',
   baseType: '_component',
   compositionBehaviors: ['sectionEnabled'],
   properties: {
@@ -28,7 +28,7 @@ export const HeroCarousel = contentType({
       displayName: 'Slides',
       items: {
         type: 'content',
-        allowedTypes: [HeroSlideItem],
+        allowedTypes: [OfferEntityV2],
       },
     },
   },

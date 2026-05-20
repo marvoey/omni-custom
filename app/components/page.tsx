@@ -105,11 +105,6 @@ function SectionLabel({ kicker, title }: { kicker: string; title: string }) {
 export default function ComponentLibraryPage() {
   return (
     <main className="bg-[#fafafa] min-h-screen">
-      <SectionLabel kicker="01 — Hero Carousel" title="HeroCarousel" />
-      <section className="max-w-6xl mx-auto px-6">
-        <HeroCarousel slides={carouselSlides} interval={6000} />
-      </section>
-
       <SectionLabel kicker="02 — Hero Slide" title="HeroSlideItem (static)" />
       <section className="max-w-6xl mx-auto px-6">
         <HeroSlideItem

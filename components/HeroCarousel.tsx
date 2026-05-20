@@ -1,68 +1,26 @@
 "use client";
 
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import HeroSlideItem from './HeroSlideItem';
+import OfferHeroSlide from './OfferHeroSlide';
 import type { ContentProps } from '@optimizely/cms-sdk';
 import type { HeroCarousel as HeroCarouselContentType } from '@/cms/content-types/HeroCarousel';
+import type { OfferEntityV2 as OfferEntityV2ContentType } from '@/cms/content-types/OfferEntityV2';
 
-type Slide = {
-  heading?: string;
-  description?: string;
-  backgroundImage?: string;
-  buttonLink?: string;
-  buttonText?: string;
-};
+type OfferSlide = ContentProps<typeof OfferEntityV2ContentType>;
 
 interface HeroCarouselProps {
-  slides?: Slide[];
   autoPlay?: boolean;
   interval?: number;
   content?: ContentProps<typeof HeroCarouselContentType>;
 }
 
-function deriveSlidesFromContent(
-  content: ContentProps<typeof HeroCarouselContentType>,
-): Slide[] {
-  const rawSlides = (content.Slides ?? []) as Array<{
-    overrideTitle?: string;
-    overrideTeaser?: string;
-    overrideCtaLabel?: string;
-    targetOffer?: {
-      offerTitle?: string;
-      shortTeaser?: string;
-      ctaLabel?: string;
-      ctaUrl?: { default?: string };
-      cardImage?: { url?: { default?: string } };
-      HeroImage?: { url?: { default?: string } };
-    };
-  }>;
-
-  return rawSlides.map((slide) => {
-    const offer = slide.targetOffer ?? {};
-    return {
-      heading: slide.overrideTitle || offer.offerTitle || '',
-      description: slide.overrideTeaser || offer.shortTeaser || '',
-      backgroundImage:
-        offer.HeroImage?.url?.default || offer.cardImage?.url?.default || '',
-      buttonText: slide.overrideCtaLabel || offer.ctaLabel || 'Learn More',
-      buttonLink: offer.ctaUrl?.default || '#',
-    };
-  });
-}
-
 const HeroCarousel = ({
-  slides: slidesProp,
   autoPlay = true,
   interval: intervalProp,
   content,
 }: HeroCarouselProps) => {
-  const slides = useMemo<Slide[]>(() => {
-    if (slidesProp && slidesProp.length > 0) return slidesProp;
-    if (content) return deriveSlidesFromContent(content);
-    return [];
-  }, [slidesProp, content]);
-
+  const slides = (content?.Slides ?? []) as unknown as OfferSlide[];
   const interval = intervalProp ?? (content?.autoplaySpeed ? content.autoplaySpeed * 1000 : 6000);
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -84,7 +42,7 @@ const HeroCarousel = ({
     return () => clearInterval(timer);
   }, [autoPlay, interval, nextSlide, slides.length]);
 
-  if (!slides || slides.length === 0) return null;
+  if (slides.length === 0) return null;
 
   return (
     <div className="group relative h-[600px] w-full overflow-hidden bg-black">
@@ -98,8 +56,8 @@ const HeroCarousel = ({
           transition={{ duration: 0.8, ease: [0.65, 0, 0.35, 1] }}
           className="absolute inset-0 h-full w-full"
         >
-          <HeroSlideItem
-            {...slides[currentIndex]}
+          <OfferHeroSlide
+            content={slides[currentIndex]}
             priority={currentIndex === 0}
           />
         </motion.div>

@@ -9,6 +9,7 @@ import "./globals.css";
 import { HeroCarousel as HeroCarouselType } from "@/cms/content-types/HeroCarousel";
 import { HeroSlideItem as HeroSlideItemType } from "@/cms/content-types/HeroSlideItem";
 import { OfferCard as OfferCardType } from "@/cms/content-types/OfferCard";
+import { OfferEntity as OfferEntityType } from "@/cms/content-types/OfferEntity";
 import { OfferEntityV2 as OfferEntityV2Type } from "@/cms/content-types/OfferEntityV2";
 import { OmniLandingPage as OmniLandingPageType } from "@/cms/content-types/OmniLandingPage";
 import { RestaurantEntity as RestaurantEntityType } from "@/cms/content-types/RestaurantEntity";
@@ -19,6 +20,7 @@ import HeroCarouselComponent from "@/components/HeroCarousel";
 import HeroSlideItemComponent from "@/components/HeroSlideItem";
 import { OfferCard as OfferCardComponent } from "@/components/OfferCard";
 import { OfferCardV2 } from "@/components/OfferCardv2";
+import OfferEntityCard from "@/components/OfferEntityCard";
 import OmniLandingPageComponent from "@/components/OmniLandingPage";
 import RestaurantDetailComponent from "@/components/RestaurantDetail";
 
@@ -31,6 +33,7 @@ initContentTypeRegistry([
   HeroCarouselType,
   HeroSlideItemType,
   OfferCardType,
+  OfferEntityType,
   OfferEntityV2Type,
   OmniLandingPageType,
   RestaurantEntityType,
@@ -42,6 +45,7 @@ initReactComponentRegistry({
     HeroCarousel: HeroCarouselComponent,
     HeroSlideItem: HeroSlideItemComponent,
     OfferCard: OfferCardComponent,
+    OfferEntity: OfferEntityCard,
     OfferEntityV2: OfferCardV2,
     OmniLandingPage: OmniLandingPageComponent,
     RestaurantEntity: RestaurantDetailComponent,
