@@ -10,6 +10,7 @@ import { HeroCarousel as HeroCarouselType } from "@/cms/content-types/HeroCarous
 import { HeroSlideItem as HeroSlideItemType } from "@/cms/content-types/HeroSlideItem";
 import { OfferCard as OfferCardType } from "@/cms/content-types/OfferCard";
 import { OfferEntityV2 as OfferEntityV2Type } from "@/cms/content-types/OfferEntityV2";
+import { OmniLandingPage as OmniLandingPageType } from "@/cms/content-types/OmniLandingPage";
 import { RestaurantEntity as RestaurantEntityType } from "@/cms/content-types/RestaurantEntity";
 import { TaxonomyItem as TaxonomyItemType } from "@/cms/content-types/TaxonomyItem";
 
@@ -18,6 +19,7 @@ import HeroCarouselComponent from "@/components/HeroCarousel";
 import HeroSlideItemComponent from "@/components/HeroSlideItem";
 import { OfferCard as OfferCardComponent } from "@/components/OfferCard";
 import { OfferCardV2 } from "@/components/OfferCardv2";
+import OmniLandingPageComponent from "@/components/OmniLandingPage";
 import RestaurantDetailComponent from "@/components/RestaurantDetail";
 
 config({
@@ -30,6 +32,7 @@ initContentTypeRegistry([
   HeroSlideItemType,
   OfferCardType,
   OfferEntityV2Type,
+  OmniLandingPageType,
   RestaurantEntityType,
   TaxonomyItemType,
 ]);
@@ -40,6 +43,7 @@ initReactComponentRegistry({
     HeroSlideItem: HeroSlideItemComponent,
     OfferCard: OfferCardComponent,
     OfferEntityV2: OfferCardV2,
+    OmniLandingPage: OmniLandingPageComponent,
     RestaurantEntity: RestaurantDetailComponent,
   },
 });
