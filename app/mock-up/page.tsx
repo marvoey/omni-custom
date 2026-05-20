@@ -9,7 +9,7 @@ import React, { useState } from 'react';
 */
  
 // --- Inline SVG Icons (Replacement for lucide-react) ---
-const ChevronDown = ({ className }) => (
+const ChevronDown = ({ className }: { className?: string }) => (
 <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
 );
  
@@ -21,21 +21,21 @@ const X = ({ size = 24 }) => (
 <svg width={size} height={size} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
 );
  
-const ExternalLink = ({ className }) => (
+const ExternalLink = ({ className }: { className?: string }) => (
 <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
 );
  
 // --- Component Logic ---
  
-const Badge = ({ type }) => {
+const Badge = ({ type }: { type?: string }) => {
   if (!type) return null;
-  const styles = {
+  const styles: Record<string, string> = {
     'New': 'bg-emerald-100 text-emerald-800',
     'Featured': 'bg-blue-100 text-blue-800',
     'Seasonal': 'bg-amber-100 text-amber-800',
     'Limited Time': 'bg-red-100 text-red-800'
   };
- 
+
   return (
 <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider ${styles[type]}`}>
       {type}
@@ -43,7 +43,15 @@ const Badge = ({ type }) => {
   );
 };
  
-export default function OmniNavigation({ 
+type NavItem = { label: string; href: string; badge?: string; isExternal?: boolean };
+type NavGroup = { name: string; items: NavItem[] };
+type OmniNavigationProps = {
+  propertyName?: string;
+  corporateMenu?: NavGroup[];
+  propertyAppends?: Record<string, NavItem[]>;
+};
+
+export default function OmniNavigation({
   propertyName = "Trick Rider",
   corporateMenu = [
     { name: 'Stay', items: [{ label: 'Rooms and Suites', href: '/stay' }] },
@@ -64,10 +72,10 @@ export default function OmniNavigation({
       { label: 'Scottsdale Spa Retreat', href: '/offers/spa', badge: 'Seasonal' }
     ]
   }
-}) {
+}: OmniNavigationProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState(null);
- 
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+
   // LOGIC: Merge Corporate Menu with Property Appends based on Group Name
   const mergedMenu = corporateMenu.map(group => ({
     ...group,
