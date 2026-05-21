@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import type { ContentProps } from '@optimizely/cms-sdk';
+import { getPreviewUtils } from '@optimizely/cms-sdk/react/server';
 import type { HeroSlideItem as HeroSlideItemContentType } from '@/cms/content-types/HeroSlideItem';
 
 interface HeroSlideItemProps {
@@ -47,6 +48,9 @@ const HeroSlideItem = ({
   content,
 }: HeroSlideItemProps) => {
   const derived = content ? deriveFromContent(content) : null;
+  const { pa } = content
+    ? getPreviewUtils(content)
+    : { pa: (() => ({})) as ReturnType<typeof getPreviewUtils>['pa'] };
   const resolvedHeading = heading ?? derived?.heading ?? '';
   const resolvedDescription = description ?? derived?.description ?? '';
   const resolvedBackground = backgroundImage ?? derived?.backgroundImage ?? '';
@@ -74,15 +78,22 @@ const HeroSlideItem = ({
       />
 
       <div className="relative z-20 flex max-w-4xl flex-col items-center px-6 text-center text-white">
-        <h1 className="mb-4 text-3xl font-extrabold uppercase leading-tight tracking-tight md:text-6xl">
+        <h1
+          {...pa('overrideTitle')}
+          className="mb-4 text-3xl font-extrabold uppercase leading-tight tracking-tight md:text-6xl"
+        >
           {resolvedHeading}
         </h1>
-        <p className="mb-8 text-lg font-medium leading-relaxed text-gray-100 opacity-90 md:text-xl">
+        <p
+          {...pa('overrideTeaser')}
+          className="mb-8 text-lg font-medium leading-relaxed text-gray-100 opacity-90 md:text-xl"
+        >
           {resolvedDescription}
         </p>
 
         {resolvedButtonLink && (
           <Link
+            {...pa('overrideCtaLabel')}
             href={resolvedButtonLink}
             className="inline-block rounded-sm bg-blue-600 px-8 py-3.5 text-lg font-bold text-white transition-all hover:bg-blue-700 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 active:scale-95"
           >
