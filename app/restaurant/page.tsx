@@ -128,10 +128,10 @@ const RestaurantDetailPage = ({ data }: { data: RestaurantData }) => {
                     {data.Gallery.slice(0, 2).map((img, idx) => (
     <div key={idx} className="group relative overflow-hidden bg-gray-900 border border-white/5">
     <img 
-                          src={img} 
-                          alt="Interior Detail" 
-                          className="w-full h-[450px] object-cover grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-1000" 
-                        />
+      src={img} 
+      alt="Interior Detail" 
+      className="w-full h-[450px] object-cover grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-1000" 
+    />
     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity p-8 flex items-end">
     <span className="text-xs uppercase tracking-widest font-bold text-amber-500">View Atmosphere</span>
     </div>
