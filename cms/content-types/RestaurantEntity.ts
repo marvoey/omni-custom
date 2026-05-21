@@ -2,7 +2,7 @@ import { contentType } from '@optimizely/cms-sdk';
 
 export const RestaurantEntity = contentType({
   key: 'RestaurantEntity',
-  displayName: 'Restaurant (Reusable)',
+  displayName: 'Omni: Restaurant (Reusable)',
   description: 'Restaurant detail component for property dining showcases.',
   baseType: '_component',
   compositionBehaviors: ['elementEnabled', 'sectionEnabled'],

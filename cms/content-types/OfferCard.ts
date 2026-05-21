@@ -3,15 +3,19 @@ import { OfferEntityV2 } from './OfferEntityV2';
 
 export const OfferCard = contentType({
   key: 'OfferCard',
-  displayName: 'Offer Card',
+  displayName: 'Omni: Offer Card',
   description: 'Card rendering of an Offer with layout + theme variants and editor overrides.',
   baseType: '_component',
+  compositionBehaviors: ['sectionEnabled'],
   properties: {
     targetOffer: {
-      type: 'contentReference',
+      type: 'array',
       displayName: 'Target Offer',
-      description: 'The hospitality offer to link to this card.',
-      allowedTypes: [OfferEntityV2],
+      description: 'One or more hospitality offers. Standard layout renders each as a card; featured layout uses the first.',
+      items: {
+        type: 'content',
+        allowedTypes: [OfferEntityV2],
+      },
     },
     layout: {
       type: 'string',

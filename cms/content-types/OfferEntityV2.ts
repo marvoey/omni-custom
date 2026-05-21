@@ -3,7 +3,7 @@ import { TaxonomyItem } from './TaxonomyItem';
 
 export const OfferEntityV2 = contentType({
   key: 'OfferEntityV2',
-  displayName: 'Offer (V2)',
+  displayName: 'Omni: Offer (V2)',
   description: 'Canonical hospitality offer. Source of truth for HeroSlideItem and OfferCard.',
   baseType: '_component',
   properties: {

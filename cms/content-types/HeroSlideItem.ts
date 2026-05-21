@@ -3,7 +3,7 @@ import { OfferEntityV2 } from './OfferEntityV2';
 
 export const HeroSlideItem = contentType({
   key: 'HeroSlideItem',
-  displayName: 'Hero Slide Item',
+  displayName: 'Omni: Hero Slide Item',
   description: 'A single slide in a HeroCarousel — references an OfferEntityV2 with optional per-slide overrides.',
   baseType: '_component',
   compositionBehaviors: ['sectionEnabled'],

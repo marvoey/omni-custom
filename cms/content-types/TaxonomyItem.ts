@@ -2,7 +2,7 @@ import { contentType } from '@optimizely/cms-sdk';
 
 export const TaxonomyItem = contentType({
   key: 'TaxonomyItem',
-  displayName: 'Taxonomy Item',
+  displayName: 'Omni: Taxonomy Item',
   description: 'Reusable taxonomy entity for categorizing Omni offers and properties.',
   baseType: '_component',
   compositionBehaviors: ['elementEnabled'],

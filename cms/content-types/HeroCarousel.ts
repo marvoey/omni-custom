@@ -3,7 +3,7 @@ import { OfferEntityV2 } from './OfferEntityV2';
 
 export const HeroCarousel = contentType({
   key: 'HeroCarousel',
-  displayName: 'Hero Carousel',
+  displayName: 'Omni: Hero Carousel',
   description: 'Flagship homepage carousel that renders a collection of OfferEntityV2 items.',
   baseType: '_component',
   compositionBehaviors: ['sectionEnabled'],

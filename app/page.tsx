@@ -1,10 +1,8 @@
 import Link from 'next/link';
 import { ContentProps } from '@optimizely/cms-sdk';
-import HeroCarousel from '@/components/HeroCarousel';
 import HeroSlideItem from '@/components/HeroSlideItem';
-import { OfferCard } from '@/components/OfferCard';
 import RestaurantDetail from '@/components/RestaurantDetail';
-import { fetchOffers, fetchRestaurant } from '@/lib/cms';
+import { fetchRestaurant } from '@/lib/cms';
 import { RestaurantEntity } from '@/cms/content-types/RestaurantEntity';
 
 function SectionHeader({
@@ -53,58 +51,7 @@ function SectionHeader({
 }
 
 export default async function HomePage() {
-  // Fetch data from CMS
-  const cmsOffers = await fetchOffers();
   const cmsRestaurant = await fetchRestaurant();
-
-  // Map CMS offers to carousel slides and offer cards
-  const carouselSlides = cmsOffers.slice(0, 3).map((offer) => ({
-    heading: offer.offerTitle || 'Special Offer',
-    description: offer.shortTeaser || '',
-    backgroundImage: offer.cardImage?.url?.default || 'https://omni.optimarvin.com/globalassets/fort-worth--ftwdtn-couple-dining-2800x1180.jpg',
-    buttonLink: '/restaurant',
-    buttonText: offer.ctaLabel || 'Learn More',
-  }));
-
-  // Use first offer as featured, rest as standard
-  const featuredOffer = cmsOffers[0]
-    ? {
-        offerTitle: cmsOffers[0].offerTitle || '',
-        teaser: cmsOffers[0].shortTeaser || '',
-        badgeLabel: cmsOffers[0].badge || undefined,
-        cardImage: cmsOffers[0].cardImage?.url?.default || '',
-        ctaLabel: cmsOffers[0].ctaLabel || 'Learn More',
-        ctaUrl: '/restaurant',
-        bookingWindow: cmsOffers[0].bookingWindow || '',
-        stayWindow: cmsOffers[0].stayWindow || '',
-        offerCode: cmsOffers[0].OfferCode || undefined,
-        primaryCategory: 'Featured',
-      }
-    : {
-        offerTitle: 'Equestrian Elegance and Private Dining',
-        teaser: 'Immerse yourself in the spirit of the West with an exclusive dinner at Trick Rider, followed by a luxury weekend stay in our premier ranch suites.',
-        badgeLabel: 'Flash Sale',
-        cardImage: 'https://omni.optimarvin.com/globalassets/fort-worth--ftwdtn-couple-dining-2800x1180.jpg',
-        ctaLabel: 'Reserve Your Suite',
-        ctaUrl: '/restaurant',
-        bookingWindow: 'May 20 – June 15, 2026',
-        stayWindow: 'June 1 – Aug 31, 2026',
-        offerCode: 'TRICK26',
-        primaryCategory: 'Culinary',
-      };
-
-  const standardOffers = cmsOffers.slice(1, 4).map((offer) => ({
-    offerTitle: offer.offerTitle || '',
-    teaser: offer.shortTeaser || '',
-    badgeLabel: offer.badge || undefined,
-    cardImage: offer.cardImage?.url?.default || '',
-    ctaLabel: offer.ctaLabel || 'Learn More',
-    ctaUrl: '#',
-    bookingWindow: offer.bookingWindow || '',
-    stayWindow: offer.stayWindow || '',
-    offerCode: offer.OfferCode || undefined,
-    primaryCategory: 'Special Offers',
-  }));
 
   return (
     <>
@@ -131,44 +78,12 @@ export default async function HomePage() {
               Explore Dining
             </Link>
             <Link
-              href="#offers"
+              href="/en/"
               className="border border-white/30 hover:border-amber-500 hover:text-amber-500 text-white px-10 py-4 font-bold uppercase tracking-[0.25em] text-xs transition-colors"
             >
-              View Offers
+              View Landing Page
             </Link>
           </div>
-        </div>
-      </section>
-
-      {/* FEATURED OFFER */}
-      <section id="offers" className="bg-[#fafafa] py-24">
-        <SectionHeader
-          kicker="Featured"
-          title="This Season at Frisco"
-          subtitle="Hand-picked packages combining dining, golf, and stays."
-          light
-        />
-        <div className="max-w-6xl mx-auto px-6">
-          <OfferCard layout="featured" theme="light" targetOffer={featuredOffer} />
-        </div>
-      </section>
-
-      {/* OFFER GRID */}
-      <section className="bg-[#050505] py-24">
-        <SectionHeader
-          kicker="More Ways to Stay"
-          title="Curated Packages"
-          subtitle="Explore additional offers crafted around our resort experiences."
-        />
-        <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-3 gap-8">
-          {standardOffers.map((offer, i) => (
-            <OfferCard
-              key={offer.offerCode}
-              layout="standard"
-              theme={i % 2 === 0 ? 'dark' : 'light'}
-              targetOffer={offer}
-            />
-          ))}
         </div>
       </section>
 
