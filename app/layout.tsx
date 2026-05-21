@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { config, initContentTypeRegistry } from "@optimizely/cms-sdk";
+import { config, initContentTypeRegistry, initDisplayTemplateRegistry } from "@optimizely/cms-sdk";
 import { initReactComponentRegistry } from "@optimizely/cms-sdk/react/server";
 import SiteNav from "@/components/SiteNav";
 import "./globals.css";
@@ -13,6 +13,7 @@ import { OfferEntity as OfferEntityType } from "@/cms/content-types/OfferEntity"
 import { OfferEntityV2 as OfferEntityV2Type } from "@/cms/content-types/OfferEntityV2";
 import { OmniLandingPage as OmniLandingPageType } from "@/cms/content-types/OmniLandingPage";
 import { Paragraph as ParagraphType } from "@/cms/content-types/Paragraph";
+import { DefaultParagraph } from "@/cms/display-templates/DefaultParagraph";
 import { RestaurantDetail as RestaurantDetailType } from "@/cms/content-types/RestaurantDetail";
 import { RestaurantEntity as RestaurantEntityType } from "@/cms/content-types/RestaurantEntity";
 import { TaxonomyItem as TaxonomyItemType } from "@/cms/content-types/TaxonomyItem";
@@ -45,6 +46,8 @@ initContentTypeRegistry([
   RestaurantEntityType,
   TaxonomyItemType,
 ]);
+
+initDisplayTemplateRegistry([DefaultParagraph]);
 
 initReactComponentRegistry({
   resolver: {
