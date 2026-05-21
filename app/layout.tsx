@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { config, initContentTypeRegistry, initDisplayTemplateRegistry } from "@optimizely/cms-sdk";
 import { initReactComponentRegistry } from "@optimizely/cms-sdk/react/server";
-import SiteNav from "@/components/SiteNav";
+import CmsSiteNav from "@/components/CmsSiteNav";
+import { fetchMasterNav } from "@/lib/cms";
 import "./globals.css";
 
 // CMS content type registrations
@@ -78,18 +79,19 @@ export const metadata: Metadata = {
   description: "Championship golf, signature dining, and Texan luxury in Frisco, Texas.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const nav = await fetchMasterNav();
   return (
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-[#050505]">
-        <SiteNav />
+        <CmsSiteNav nav={nav} />
         <div className="flex-1">{children}</div>
       </body>
     </html>

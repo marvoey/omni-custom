@@ -81,6 +81,116 @@ export type CmsRestaurant = {
   heroImage: { url: { default: string | null }; key: string } | null;
 };
 
+export type CmsMegaSectionItem = {
+  label: string | null;
+  href: string | null;
+};
+
+export type CmsMegaSection = {
+  key: string;
+  heading: string | null;
+  items: CmsMegaSectionItem[];
+};
+
+export type CmsMasterNav = {
+  enableSideNav: boolean;
+  sectionKeys: (string | null)[];
+  sections: Record<string, CmsMegaSection>;
+};
+
+export async function fetchMasterNav(): Promise<CmsMasterNav | null> {
+  try {
+    const client = createClient();
+    const navResult = await client.request(
+      `query {
+        Omni_MasterNav_5x5_Final(
+          where: { _metadata: { status: { eq: "Published" } } }
+          orderBy: { _metadata: { lastModified: DESC } }
+          limit: 1
+        ) {
+          items {
+            EnableSideNav
+            Section1 { key }
+            Section2 { key }
+            Section3 { key }
+            Section4 { key }
+            Section5 { key }
+          }
+        }
+      }`,
+      {},
+    );
+
+    const nav = navResult?.Omni_MasterNav_5x5_Final?.items?.[0];
+    if (!nav) return null;
+
+    const sectionKeys: (string | null)[] = [
+      nav.Section1?.key ?? null,
+      nav.Section2?.key ?? null,
+      nav.Section3?.key ?? null,
+      nav.Section4?.key ?? null,
+      nav.Section5?.key ?? null,
+    ];
+
+    const nonNullKeys = sectionKeys.filter((k): k is string => Boolean(k));
+    const sections: Record<string, CmsMegaSection> = {};
+
+    if (nonNullKeys.length > 0) {
+      const sectionResult = await client.request(
+        `query MegaSections($keys: [String!]!) {
+          Omni_MegaSection_5Slots(
+            where: {
+              _metadata: {
+                key: { in: $keys }
+                status: { eq: "Published" }
+              }
+            }
+            orderBy: { _metadata: { lastModified: DESC } }
+          ) {
+            items {
+              _metadata { key }
+              Heading
+              L1_Text L1_Link { title url { default } }
+              L2_Text L2_Link { title url { default } }
+              L3_Text L3_Link { title url { default } }
+              L4_Text L4_Link { title url { default } }
+              L5_Text L5_Link { title url { default } }
+            }
+          }
+        }`,
+        { keys: nonNullKeys },
+      );
+
+      const items = sectionResult?.Omni_MegaSection_5Slots?.items ?? [];
+      for (const item of items) {
+        const key: string | undefined = item?._metadata?.key;
+        if (!key || sections[key]) continue;
+        const slots: CmsMegaSectionItem[] = [];
+        for (let i = 1; i <= 5; i++) {
+          const label: string | null = item[`L${i}_Text`] ?? item[`L${i}_Link`]?.title ?? null;
+          const href: string | null = item[`L${i}_Link`]?.url?.default ?? null;
+          if (label || href) {
+            slots.push({ label, href });
+          }
+        }
+        sections[key] = {
+          key,
+          heading: item.Heading ?? null,
+          items: slots,
+        };
+      }
+    }
+
+    return {
+      enableSideNav: Boolean(nav.EnableSideNav),
+      sectionKeys,
+      sections,
+    };
+  } catch {
+    return null;
+  }
+}
+
 export async function fetchOffers(): Promise<CmsOffer[]> {
   try {
     const client = createClient();
