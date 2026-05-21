@@ -41,14 +41,14 @@ const RestaurantDetailPage: React.FC<Props> = ({ content }) => {
 
   return (
     <div className="min-h-screen bg-[#050505] text-gray-100 selection:bg-amber-500/30 font-sans">
-      <header className="relative h-screen min-h-[700px] w-full overflow-hidden flex items-center justify-center">
+      <header className="relative min-h-[700px] md:min-h-[900px] w-full overflow-hidden flex items-center justify-center">
         <div className="absolute inset-0 z-0">
           {heroImageUrl && (
             <img
               {...pa('HeroImage')}
               src={heroImageUrl}
               alt={content.RestaurantName ?? ''}
-              className="w-full h-full object-cover scale-105 opacity-60"
+              className="w-full h-full object-cover opacity-60"
             />
           )}
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-[#050505]" />
