@@ -2,55 +2,13 @@ import { GraphClient, type PreviewParams } from '@optimizely/cms-sdk';
 import { OptimizelyComponent, withAppContext } from '@optimizely/cms-sdk/react/server';
 import { PreviewComponent } from '@optimizely/cms-sdk/react/client';
 import Script from 'next/script';
-import { headers } from 'next/headers';
-import { redirect } from 'next/navigation';
-
-const LOCAL_PREVIEW_ORIGIN = 'http://localhost:3000';
 
 type Props = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
-function buildQueryString(
-  params: { [key: string]: string | string[] | undefined },
-): string {
-  const qs = new URLSearchParams();
-  for (const [key, value] of Object.entries(params)) {
-    if (typeof value === 'string') qs.set(key, value);
-    else if (Array.isArray(value)) value.forEach((v) => qs.append(key, v));
-  }
-  return qs.toString();
-}
-
-async function localPreviewReachable(): Promise<boolean> {
-  try {
-    const res = await fetch(`${LOCAL_PREVIEW_ORIGIN}/preview`, {
-      method: 'HEAD',
-      signal: AbortSignal.timeout(500),
-      cache: 'no-store',
-    });
-    return res.status < 500;
-  } catch {
-    return false;
-  }
-}
-
 export async function Page({ searchParams }: Props) {
   const resolvedSearchParams = await searchParams;
-
-  const requestHost = (await headers()).get('host') ?? '';
-  const alreadyLocal =
-    requestHost.startsWith('localhost:3000') ||
-    requestHost.startsWith('127.0.0.1:3000');
-  console.log('[preview] requestHost:', requestHost, 'alreadyLocal:', alreadyLocal);
-  const shouldRedirectToLocal = !alreadyLocal && (await localPreviewReachable());
-  console.log('[preview] localPreviewReachable →', shouldRedirectToLocal);
-  if (shouldRedirectToLocal) {
-    const qs = buildQueryString(resolvedSearchParams);
-    const target = `${LOCAL_PREVIEW_ORIGIN}/preview${qs ? `?${qs}` : ''}`;
-    console.log('[preview] redirecting to:', target);
-    redirect(target);
-  }
 
   console.log('\n🎬 [PreviewPage] Route accessed');
   console.log('   searchParams:', JSON.stringify(resolvedSearchParams, null, 2));

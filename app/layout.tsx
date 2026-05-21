@@ -13,6 +13,7 @@ import { OfferEntity as OfferEntityType } from "@/cms/content-types/OfferEntity"
 import { OfferEntityV2 as OfferEntityV2Type } from "@/cms/content-types/OfferEntityV2";
 import { OmniLandingPage as OmniLandingPageType } from "@/cms/content-types/OmniLandingPage";
 import { Paragraph as ParagraphType } from "@/cms/content-types/Paragraph";
+import { RestaurantDetail as RestaurantDetailType } from "@/cms/content-types/RestaurantDetail";
 import { RestaurantEntity as RestaurantEntityType } from "@/cms/content-types/RestaurantEntity";
 import { TaxonomyItem as TaxonomyItemType } from "@/cms/content-types/TaxonomyItem";
 
@@ -25,6 +26,7 @@ import OfferEntityCard from "@/components/OfferEntityCard";
 import OmniLandingPageComponent from "@/components/OmniLandingPage";
 import ParagraphComponent from "@/components/Paragraph";
 import RestaurantDetailComponent from "@/components/RestaurantDetail";
+import RestaurantDetailPageComponent from "@/components/RestaurantDetailPage";
 
 config({
   apiKey: process.env.OPTIMIZELY_GRAPH_SINGLE_KEY!,
@@ -39,6 +41,7 @@ initContentTypeRegistry([
   OfferEntityV2Type,
   OmniLandingPageType,
   ParagraphType,
+  RestaurantDetailType,
   RestaurantEntityType,
   TaxonomyItemType,
 ]);
@@ -52,6 +55,7 @@ initReactComponentRegistry({
     OfferEntityV2: OfferCardV2,
     OmniLandingPage: OmniLandingPageComponent,
     Paragraph: ParagraphComponent,
+    RestaurantDetail: RestaurantDetailPageComponent,
     RestaurantEntity: RestaurantDetailComponent,
   },
 });
