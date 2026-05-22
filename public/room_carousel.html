@@ -1,0 +1,310 @@
+Room carousel:
+ 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Omni PGA Frisco - Select Room Carousel</title>
+<style>
+        :root {
+            --omni-navy: #002D72;
+            --omni-gold: #C5A059;
+            --omni-beige: #F4F1EA;
+            --text-dark: #333333;
+            --white: #FFFFFF;
+        }
+ 
+        body {
+            font-family: 'Playfair Display', serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--omni-beige);
+            color: var(--text-dark);
+        }
+ 
+        .carousel-section {
+            padding: 60px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+ 
+        .section-header h2 {
+            font-size: 2.5rem;
+            color: var(--omni-navy);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+ 
+        .section-header p {
+            font-style: italic;
+            margin-bottom: 40px;
+            color: #666;
+        }
+ 
+        .carousel-container {
+            position: relative;
+            overflow: hidden;
+            padding: 20px 0;
+        }
+ 
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            gap: 20px;
+        }
+ 
+        .room-card {
+            min-width: 320px;
+            background: var(--white);
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: left;
+            transition: transform 0.3s ease;
+        }
+ 
+        .room-card:hover {
+            transform: translateY(-5px);
+        }
+ 
+        .room-image {
+            width: 100%;
+            height: 240px;
+            background-size: cover;
+            background-position: center;
+            background-color: #eee;
+        }
+ 
+        .room-content {
+            padding: 20px;
+        }
+ 
+        .room-title {
+            font-size: 1.25rem;
+            color: var(--omni-navy);
+            margin: 0 0 10px 0;
+            font-weight: bold;
+        }
+ 
+        .room-description {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: #555;
+            height: 60px;
+            overflow: hidden;
+        }
+ 
+        .room-cta {
+            display: inline-block;
+            background-color: var(--omni-navy);
+            color: var(--white);
+            padding: 10px 20px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-radius: 2px;
+            transition: background 0.3s;
+        }
+ 
+        .room-cta:hover {
+            background-color: var(--omni-gold);
+        }
+ 
+        /* Navigation Arrows */
+        .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255,255,255,0.8);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 10;
+            font-size: 20px;
+            color: var(--omni-navy);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+ 
+        .nav-btn:hover {
+            background: var(--white);
+            color: var(--omni-gold);
+        }
+ 
+        .prev-btn { left: 10px; }
+        .next-btn { right: 10px; }
+ 
+        /* Indicators */
+        .indicators {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 30px;
+        }
+ 
+        .dot {
+            width: 10px;
+            height: 10px;
+            background: #ccc;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+ 
+        .dot.active {
+            background: var(--omni-gold);
+        }
+</style>
+</head>
+<body>
+ 
+<section class="carousel-section">
+<div class="section-header">
+<h2>Your Oasis at PGA Frisco</h2>
+<p>Curated luxury designed for the ultimate retreat.</p>
+</div>
+ 
+    <div class="carousel-container">
+<button class="nav-btn prev-btn" id="prevBtn">&#10094;</button>
+<button class="nav-btn next-btn" id="nextBtn">&#10095;</button>
+ 
+        <div class="carousel-track" id="track">
+<!-- Room 1 -->
+<div class="room-card">
+<div class="room-image" style="background-image: url('https://placehold.co/600x400/002D72/FFFFFF?text=Deluxe+King');"></div>
+<div class="room-content">
+<h3 class="room-title">Deluxe King</h3>
+<p class="room-description">Unwind in our spacious king room featuring modern amenities and breathtaking views of the fairway.</p>
+<a href="/workspace/output/#" class="room-cta">Explore Highlights</a>
+</div>
+</div>
+ 
+            <!-- Room 2 -->
+<div class="room-card">
+<div class="room-image" style="background-image: url('https://placehold.co/600x400/C5A059/FFFFFF?text=Deluxe+Queen');"></div>
+<div class="room-content">
+<h3 class="room-title">Deluxe Queen</h3>
+<p class="room-description">Perfect for families or groups, offering two queen beds with premium linens and refined decor.</p>
+<a href="/workspace/output/#" class="room-cta">Explore Highlights</a>
+</div>
+</div>
+ 
+            <!-- Room 3 -->
+<div class="room-card">
+<div class="room-image" style="background-image: url('https://placehold.co/600x400/333333/FFFFFF?text=Balcony+Suite');"></div>
+<div class="room-content">
+<h3 class="room-title">Balcony Suite</h3>
+<p class="room-description">Elevate your stay with a private balcony and separate living area, perfect for entertaining.</p>
+<a href="/workspace/output/#" class="room-cta">Explore Highlights</a>
+</div>
+</div>
+ 
+            <!-- Room 4 (From CMS) -->
+<div class="room-card">
+<div class="room-image" style="background-image: url('https://placehold.co/600x400/002D72/C5A059?text=Ranch+Home+Villa');"></div>
+<div class="room-content">
+<h3 class="room-title">Ranch Home Villa</h3>
+<p class="room-description">Experience ultimate privacy in our exclusive villas, featuring multi-room layouts and bespoke residential touches.</p>
+<a href="/workspace/output/#" class="room-cta">Explore Highlights</a>
+</div>
+</div>
+ 
+            <!-- Room 5 -->
+<div class="room-card">
+<div class="room-image" style="background-image: url('https://placehold.co/600x400/C5A059/002D72?text=Presidential+Suite');"></div>
+<div class="room-content">
+<h3 class="room-title">Presidential Suite</h3>
+<p class="room-description">Our most prestigious accommodation, offering unparalleled luxury, panoramic views, and executive service.</p>
+<a href="/workspace/output/#" class="room-cta">Explore Highlights</a>
+</div>
+</div>
+ 
+            <!-- Room 6 -->
+<div class="room-card">
+<div class="room-image" style="background-image: url('https://placehold.co/600x400/666666/FFFFFF?text=Garden+View');"></div>
+<div class="room-content">
+<h3 class="room-title">Garden View Room</h3>
+<p class="room-description">Peaceful retreats overlooking our manicured gardens, providing a serene escape from the action.</p>
+<a href="/workspace/output/#" class="room-cta">Explore Highlights</a>
+</div>
+</div>
+ 
+            <!-- Room 7 -->
+<div class="room-card">
+<div class="room-image" style="background-image: url('https://placehold.co/600x400/002D72/EEEEEE?text=Executive+King');"></div>
+<div class="room-content">
+<h3 class="room-title">Executive King</h3>
+<p class="room-description">Designed for the modern traveler with dedicated workstations and enhanced ergonomic comfort.</p>
+<a href="/workspace/output/#" class="room-cta">Explore Highlights</a>
+</div>
+</div>
+</div>
+</div>
+ 
+    <div class="indicators" id="indicators">
+<!-- Dots will be generated by JS -->
+</div>
+</section>
+ 
+<script>
+    const track = document.getElementById('track');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const indicatorsContainer = document.getElementById('indicators');
+    const cards = document.querySelectorAll('.room-card');
+    let currentIndex = 0;
+    const cardWidth = 340; // card min-width (320) + gap (20)
+    const visibleCards = 3;
+ 
+    // Create dots
+    const totalSteps = cards.length - visibleCards + 1;
+    for (let i = 0; i < totalSteps; i++) {
+        const dot = document.createElement('div');
+        dot.classList.add('dot');
+        if (i === 0) dot.classList.add('active');
+        dot.addEventListener('click', () => moveToStep(i));
+        indicatorsContainer.appendChild(dot);
+    }
+ 
+    const dots = document.querySelectorAll('.dot');
+ 
+    function updateCarousel() {
+        track.style.transform = `translateX(-${currentIndex * cardWidth}px)`;
+        dots.forEach((dot, index) => {
+            dot.classList.toggle('active', index === currentIndex);
+        });
+    }
+ 
+    function moveToStep(index) {
+        currentIndex = index;
+        updateCarousel();
+    }
+ 
+    nextBtn.addEventListener('click', () => {
+        if (currentIndex < totalSteps - 1) {
+            currentIndex++;
+            updateCarousel();
+        }
+    });
+ 
+    prevBtn.addEventListener('click', () => {
+        if (currentIndex > 0) {
+            currentIndex--;
+            updateCarousel();
+        }
+    });
+ 
+    // Handle responsiveness (simplified)
+    window.addEventListener('resize', () => {
+        // Recalculate if needed for single card mobile view
+    });
+</script>
+ 
+</body>
+</html>

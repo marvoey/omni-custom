@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { config, initContentTypeRegistry, initDisplayTemplateRegistry } from "@optimizely/cms-sdk";
 import { initReactComponentRegistry } from "@optimizely/cms-sdk/react/server";
 import CmsSiteNav from "@/components/CmsSiteNav";
+import DevSidebar from "@/components/DevSidebar";
 import { fetchMasterNav } from "@/lib/cms";
 import "./globals.css";
 
@@ -91,6 +92,7 @@ export default async function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-[#050505]">
+        <DevSidebar />
         <CmsSiteNav nav={nav} />
         <div className="flex-1">{children}</div>
       </body>
