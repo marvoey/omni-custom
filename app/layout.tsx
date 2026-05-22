@@ -18,6 +18,8 @@ import { Paragraph as ParagraphType } from "@/cms/content-types/Paragraph";
 import { DefaultParagraph } from "@/cms/display-templates/DefaultParagraph";
 import { RestaurantDetail as RestaurantDetailType } from "@/cms/content-types/RestaurantDetail";
 import { RestaurantEntity as RestaurantEntityType } from "@/cms/content-types/RestaurantEntity";
+import { RoomCard as RoomCardType } from "@/cms/content-types/RoomCard";
+import { RoomCarouselSection as RoomCarouselSectionType } from "@/cms/content-types/RoomCarouselSection";
 import { TaxonomyItem as TaxonomyItemType } from "@/cms/content-types/TaxonomyItem";
 
 // React component registrations
@@ -30,6 +32,8 @@ import OmniLandingPageComponent from "@/components/OmniLandingPage";
 import ParagraphComponent from "@/components/Paragraph";
 import RestaurantDetailComponent from "@/components/RestaurantDetail";
 import RestaurantDetailPageComponent from "@/components/RestaurantDetailPage";
+import RoomCardComponent from "@/components/RoomCard";
+import RoomCarouselComponent from "@/components/RoomCarousel";
 
 config({
   apiKey: process.env.OPTIMIZELY_GRAPH_SINGLE_KEY!,
@@ -46,6 +50,8 @@ initContentTypeRegistry([
   ParagraphType,
   RestaurantDetailType,
   RestaurantEntityType,
+  RoomCardType,
+  RoomCarouselSectionType,
   TaxonomyItemType,
 ]);
 
@@ -62,6 +68,8 @@ initReactComponentRegistry({
     Paragraph: ParagraphComponent,
     RestaurantDetail: RestaurantDetailPageComponent,
     RestaurantEntity: RestaurantDetailComponent,
+    RoomCard: RoomCardComponent,
+    RoomCarouselSection: RoomCarouselComponent,
   },
 });
 
