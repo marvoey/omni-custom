@@ -7,19 +7,29 @@ import type { RoomCard as RoomCardContentType } from '@/cms/content-types/RoomCa
 type CmsLink = { title?: string; text?: string; url?: { default?: string } };
 
 interface RoomCardProps {
-  content: ContentProps<typeof RoomCardContentType>;
+  content?: ContentProps<typeof RoomCardContentType> | null;
 }
 
-const RoomCard = ({ content }: RoomCardProps) => {
-  const { pa } = getPreviewUtils(content);
+const NOOP_PA = (() => ({})) as ReturnType<typeof getPreviewUtils>['pa'];
 
-  const photo = (content.Photo ?? null) as { url?: { default?: string } } | null;
-  const learnMore = (content.LearnMoreLink ?? null) as CmsLink | null;
-  const bookNow = (content.BookNowLink ?? null) as CmsLink | null;
+const RoomCard = ({ content }: RoomCardProps) => {
+  if (!content) return null;
+
+  const { pa } = (() => {
+    try {
+      return getPreviewUtils(content);
+    } catch {
+      return { pa: NOOP_PA };
+    }
+  })();
+
+  const photo = (content?.Photo ?? null) as { url?: { default?: string } } | null;
+  const learnMore = (content?.LearnMoreLink ?? null) as CmsLink | null;
+  const bookNow = (content?.BookNowLink ?? null) as CmsLink | null;
 
   const photoUrl = photo?.url?.default ?? '';
-  const title = content.Title ?? '';
-  const description = content.Description ?? '';
+  const title = content?.Title ?? '';
+  const description = content?.Description ?? '';
 
   const learnMoreUrl = learnMore?.url?.default ?? '';
   const learnMoreLabel = learnMore?.title || learnMore?.text || 'Learn More';

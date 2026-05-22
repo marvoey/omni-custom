@@ -9,7 +9,7 @@ import type { RoomCard as RoomCardContentType } from '@/cms/content-types/RoomCa
 type RoomCardContent = ContentProps<typeof RoomCardContentType>;
 
 interface RoomCarouselProps {
-  content?: ContentProps<typeof RoomCarouselSectionContentType>;
+  content?: ContentProps<typeof RoomCarouselSectionContentType> | null;
 }
 
 const ChevronLeft = ({ size = 24 }: { size?: number }) => (
@@ -25,10 +25,14 @@ const ChevronRight = ({ size = 24 }: { size?: number }) => (
 );
 
 export default function RoomCarousel({ content }: RoomCarouselProps) {
-  const cards = (content?.CardsLink ?? []) as unknown as RoomCardContent[];
+  const rawCards = (content?.CardsLink ?? []) as unknown as (RoomCardContent | null | undefined)[];
+  const cards = rawCards.filter((c): c is RoomCardContent => Boolean(c));
   const heading = content?.Heading ?? '';
   const introHtml =
-    (content?.IntroText as { html?: string } | undefined)?.html ?? '';
+    (content?.IntroText as { html?: string } | string | undefined) &&
+    typeof content?.IntroText === 'object'
+      ? ((content?.IntroText as { html?: string } | undefined)?.html ?? '')
+      : ((content?.IntroText as string | undefined) ?? '');
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [visibleCards, setVisibleCards] = useState(3);
@@ -45,8 +49,15 @@ export default function RoomCarousel({ content }: RoomCarouselProps) {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  useEffect(() => {
+    setCurrentIndex((idx) => {
+      const maxIdx = Math.max(cards.length - visibleCards, 0);
+      return Math.min(idx, maxIdx);
+    });
+  }, [cards.length, visibleCards]);
+
   const totalSteps = Math.max(cards.length - visibleCards + 1, 1);
-  const safeIndex = Math.min(currentIndex, totalSteps - 1);
+  const safeIndex = Math.min(Math.max(currentIndex, 0), totalSteps - 1);
 
   const nextSlide = () => {
     setCurrentIndex((prev) => (prev < totalSteps - 1 ? prev + 1 : prev));
@@ -56,7 +67,26 @@ export default function RoomCarousel({ content }: RoomCarouselProps) {
     setCurrentIndex((prev) => (prev > 0 ? prev - 1 : prev));
   };
 
-  if (cards.length === 0) return null;
+  if (!content) return null;
+  if (cards.length === 0) {
+    return (
+      <div className="bg-[#F4F1EA] py-16 px-4 font-serif">
+        <div className="max-w-7xl mx-auto text-center">
+          {heading && (
+            <h2 className="text-4xl md:text-5xl text-[#002D72] uppercase tracking-widest mb-4 font-bold">
+              {heading}
+            </h2>
+          )}
+          {introHtml && (
+            <div
+              className="text-gray-600 italic text-lg"
+              dangerouslySetInnerHTML={{ __html: introHtml }}
+            />
+          )}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-[#F4F1EA] py-16 px-4 font-serif">
@@ -105,7 +135,7 @@ export default function RoomCarousel({ content }: RoomCarouselProps) {
             >
               {cards.map((card, idx) => (
                 <div
-                  key={(card._metadata?.key as string | undefined) ?? idx}
+                  key={(card?._metadata?.key as string | undefined) ?? idx}
                   className="shrink-0"
                   style={{ width: `calc(${100 / visibleCards}% - 1.5rem)` }}
                 >
