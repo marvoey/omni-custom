@@ -2,6 +2,8 @@ import { notFound } from 'next/navigation';
 import { getClient } from '@optimizely/cms-sdk';
 import { OptimizelyComponent, withAppContext } from '@optimizely/cms-sdk/react/server';
 
+export const dynamic = 'force-dynamic';
+
 type Props = {
   params: Promise<{ locale: string; slug?: string[] }>;
 };
