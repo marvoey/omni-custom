@@ -13,7 +13,7 @@ async function LocalePage({ params }: Props) {
   const path = '/' + [locale, ...(slug ?? [])].join('/') + '/';
 
   const client = getClient();
-  const results = await client.getContentByPath(path);
+  const results = await client.getContentByPath(path, { cache: false });
   const content = results?.[0];
 
   if (!content) {
