@@ -21,7 +21,14 @@ async function LocalePage({ params }: Props) {
     notFound();
   }
 
-  return <OptimizelyComponent content={content} />;
+  const ssrStamp = `[ssr-debug] path=${path} ts=${new Date().toISOString()} version=${(content as { _metadata?: { version?: string } })?._metadata?.version ?? 'unknown'}`;
+
+  return (
+    <>
+      <div data-ssr-debug style={{ display: 'none' }}>{ssrStamp}</div>
+      <OptimizelyComponent content={content} />
+    </>
+  );
 }
 
 export default withAppContext(LocalePage);
