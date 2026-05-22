@@ -7,6 +7,53 @@ type Props = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
+const INDEXING_ERROR_MARKER = 'No content found for key';
+const RETRY_DELAYS_MS = [0, 400, 1000];
+
+const isIndexingLatencyError = (err: unknown): boolean => {
+  if (!err || typeof err !== 'object') return false;
+  const name = (err as { name?: string }).name;
+  const message = (err as { message?: string }).message ?? '';
+  return (
+    (name === 'GraphResponseError' || name?.endsWith('GraphResponseError') === true) &&
+    message.includes(INDEXING_ERROR_MARKER)
+  );
+};
+
+const sleep = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
+
+async function fetchPreviewWithRetry(
+  client: GraphClient,
+  params: PreviewParams,
+): Promise<
+  | { ok: true; response: Awaited<ReturnType<GraphClient['getPreviewContent']>> }
+  | { ok: false }
+> {
+  let lastError: unknown;
+  for (let attempt = 0; attempt < RETRY_DELAYS_MS.length; attempt++) {
+    if (RETRY_DELAYS_MS[attempt] > 0) {
+      await sleep(RETRY_DELAYS_MS[attempt]);
+    }
+    try {
+      const response = await client.getPreviewContent(params);
+      return { ok: true, response };
+    } catch (err) {
+      if (!isIndexingLatencyError(err)) {
+        throw err;
+      }
+      lastError = err;
+      console.warn(
+        `⚠️  Preview content not yet indexed (attempt ${attempt + 1}/${RETRY_DELAYS_MS.length}). Retrying…`,
+      );
+    }
+  }
+  console.warn(
+    `⚠️  Preview content not indexed after ${RETRY_DELAYS_MS.length} attempts; rendering placeholder. Last error:`,
+    (lastError as { message?: string })?.message,
+  );
+  return { ok: false };
+}
+
 export async function Page({ searchParams }: Props) {
   const resolvedSearchParams = await searchParams;
 
@@ -18,9 +65,39 @@ export async function Page({ searchParams }: Props) {
   });
 
   console.log('\n🔍 Calling client.getPreviewContent(...)');
-  const response = await client.getPreviewContent(
+  const result = await fetchPreviewWithRetry(
+    client,
     resolvedSearchParams as PreviewParams,
   );
+
+  const injectorScript = (
+    <Script
+      src={`${process.env.OPTIMIZELY_CMS_URL}/util/javascript/communicationinjector.js`}
+    />
+  );
+
+  if (!result.ok) {
+    return (
+      <>
+        {injectorScript}
+        <PreviewComponent />
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            minHeight: '100vh',
+            fontFamily: 'system-ui, sans-serif',
+            color: '#666',
+          }}
+        >
+          <p>Updating preview…</p>
+        </div>
+      </>
+    );
+  }
+
+  const response = result.response;
 
   console.log('\n📦 getPreviewContent response:');
   console.log('   __typename:', response?.__typename);
@@ -43,9 +120,7 @@ export async function Page({ searchParams }: Props) {
 
   return (
     <>
-      <Script
-        src={`${process.env.OPTIMIZELY_CMS_URL}/util/javascript/communicationinjector.js`}
-      />
+      {injectorScript}
       <PreviewComponent />
       <OptimizelyComponent content={response} />
     </>
